@@ -70,9 +70,16 @@ class DiskSetup:
         self.root_dir = root_dir
         self.xml_state = xml_state
 
-    def get_disksize_mbytes(self) -> int:
+    def get_disksize_mbytes(
+        self, root_clone: int = 0, boot_clone: int = 0
+    ) -> int:
         """
         Precalculate disk size requirements in mbytes
+
+        :param int root_clone:
+            root partition gets cloned, N+1 times the size is needed
+        :param int boot_clone:
+            boot partition gets cloned, N+1 times the size is needed
 
         :return: disk size mbytes
 
@@ -83,6 +90,14 @@ class DiskSetup:
         root_filesystem_mbytes = self.rootsize.customize(
             self.rootsize.accumulate_mbyte_file_sizes(), self.filesystem
         )
+        if root_clone:
+            root_clone += 1
+            log.info(
+                '--> root partition is clone: {0}*{1} MB'.format(
+                    root_clone, root_filesystem_mbytes
+                )
+            )
+            root_filesystem_mbytes *= root_clone
         calculated_disk_mbytes += root_filesystem_mbytes
         log.info(
             '--> system data with filesystem overhead needs %s MB',
@@ -125,6 +140,14 @@ class DiskSetup:
 
         boot_mbytes = self.boot_partition_size()
         if boot_mbytes:
+            if boot_clone:
+                boot_clone += 1
+                log.info(
+                    '--> boot partition is clone: {0}*{1} MB'.format(
+                        boot_clone, boot_mbytes
+                    )
+                )
+                boot_mbytes *= boot_clone
             calculated_disk_mbytes += boot_mbytes
             log.info(
                 '--> boot partition adding %s MB', boot_mbytes

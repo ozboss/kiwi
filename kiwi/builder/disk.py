@@ -36,6 +36,7 @@ from kiwi.system.identifier import SystemIdentifier
 from kiwi.boot.image import BootImage
 from kiwi.storage.setup import DiskSetup
 from kiwi.storage.loop_device import LoopDevice
+from kiwi.storage.clone_device import CloneDevice
 from kiwi.firmware import FirmWare
 from kiwi.storage.disk import Disk
 from kiwi.storage.raid_device import RaidDevice
@@ -102,6 +103,9 @@ class DiskBuilder:
             xml_state.build_type.get_embed_verity_metadata()
         self.dosparttable_extended_layout = \
             xml_state.build_type.get_dosparttable_extended_layout()
+        # TODO: Add to schema, do not allow root_clone for lvm and raid
+        self.boot_is_clone = 1
+        self.root_is_clone = 1
         self.custom_root_mount_args = xml_state.get_fs_mount_option_list()
         self.custom_root_creation_args = xml_state.get_fs_create_option_list()
         self.build_type_name = xml_state.get_build_type_name()
@@ -252,7 +256,9 @@ class DiskBuilder:
             self.boot_image.prepare()
 
         # precalculate needed disk size
-        disksize_mbytes = self.disk_setup.get_disksize_mbytes()
+        disksize_mbytes = self.disk_setup.get_disksize_mbytes(
+            root_clone=self.root_is_clone, boot_clone=self.boot_is_clone
+        )
 
         # create the disk
         log.info('Creating raw disk image %s', self.diskname)
@@ -832,12 +838,18 @@ class DiskBuilder:
             disksize_used_mbytes += partition_mbsize
 
         if self.disk_setup.need_boot_partition():
-            log.info('--> creating boot partition')
+            log.info(
+                '--> creating boot partition [with {0} clone(s)]'.format(
+                    self.boot_is_clone
+                )
+            )
             partition_mbsize = self.disk_setup.boot_partition_size()
             disk.create_boot_partition(
-                partition_mbsize
+                partition_mbsize, self.boot_is_clone
             )
-            disksize_used_mbytes += partition_mbsize
+            disksize_used_mbytes += \
+                (self.boot_is_clone + 1) * partition_mbsize if \
+                self.boot_is_clone else partition_mbsize
 
         if self.swap_mbytes:
             if not self.volume_manager_name or self.volume_manager_name != 'lvm':
@@ -881,9 +893,11 @@ class DiskBuilder:
                     os.path.getsize(squashed_root_file.name) / 1048576
                 ) + Defaults.get_min_partition_mbytes()
             disk.create_root_readonly_partition(
-                squashed_rootfs_mbsize
+                squashed_rootfs_mbsize, self.root_is_clone
             )
-            disksize_used_mbytes += squashed_rootfs_mbsize
+            disksize_used_mbytes += \
+                (self.root_is_clone + 1) * squashed_rootfs_mbsize if \
+                self.root_is_clone else squashed_rootfs_mbsize
 
         if self.spare_part_mbsize and self.spare_part_is_last:
             rootfs_mbsize = disksize_mbytes - disksize_used_mbytes - \
@@ -897,15 +911,39 @@ class DiskBuilder:
                 '--> overlayroot explicitly requested no write partition'
             )
         else:
+            root_is_clone = self.root_is_clone
+            if self.root_filesystem_is_overlay:
+                # in overlay mode an eventual root clone is created from
+                # the root readonly partition and not from the root (rw)
+                # partition. Thus no further action needed here in this
+                # case
+                root_is_clone = 0
+            if root_is_clone:
+                clone_rootfs_mbsize = int(
+                    (disksize_mbytes - disksize_used_mbytes) / (root_is_clone + 1)
+                ) + Defaults.get_min_partition_mbytes()
+                rootfs_mbsize = f'clone:all_free:{clone_rootfs_mbsize}'
             if self.volume_manager_name and self.volume_manager_name == 'lvm':
-                log.info('--> creating LVM root partition')
-                disk.create_root_lvm_partition(rootfs_mbsize)
+                log.info(
+                    '--> creating {0} partition [with {1} clone(s)]'.format(
+                        'root(LVM)', root_is_clone
+                    )
+                )
+                disk.create_root_lvm_partition(rootfs_mbsize, root_is_clone)
             elif self.mdraid:
-                log.info('--> creating mdraid root partition')
-                disk.create_root_raid_partition(rootfs_mbsize)
+                log.info(
+                    '--> creating {0} partition [with {1} clone(s)]'.format(
+                        f'root(mdraid={self.mdraid})', root_is_clone
+                    )
+                )
+                disk.create_root_raid_partition(rootfs_mbsize, root_is_clone)
             else:
-                log.info('--> creating root partition')
-                disk.create_root_partition(rootfs_mbsize)
+                log.info(
+                    '--> creating root partition [with {0} clone(s)]'.format(
+                        root_is_clone
+                    )
+                )
+                disk.create_root_partition(rootfs_mbsize, root_is_clone)
 
         if self.spare_part_mbsize and self.spare_part_is_last:
             log.info('--> creating spare partition')
@@ -931,7 +969,11 @@ class DiskBuilder:
 
         disk.map_partitions()
 
-        return disk.get_device()
+        device_map = disk.get_device()
+        device_map['origin_root'] = \
+            device_map.get('readonly') or device_map.get('root')
+
+        return device_map
 
     def _write_partition_id_config_to_boot_image(self, disk: Disk) -> None:
         log.info('Creating config.partids in boot system')
@@ -1207,6 +1249,13 @@ class DiskBuilder:
             system_boot.sync_data(
                 self._get_exclude_list_for_boot_data_sync()
             )
+            if device_map.get('bootclone1'):
+                log.info(
+                    '--> Dumping boot clone data at extra partition'
+                )
+                CloneDevice(system_boot.device_provider, self.root_dir).clone(
+                    self._get_clone_devices('bootclone', device_map)
+                )
 
         log.info('--> Syncing root filesystem data')
         if self.root_filesystem_is_overlay:
@@ -1256,6 +1305,13 @@ class DiskBuilder:
             if self.root_filesystem_embed_verity_metadata:
                 squashed_root.create_verification_metadata(
                     readonly_target
+                )
+            if device_map.get('rootclone1'):
+                log.info(
+                    '--> Dumping readonly root clone data at extra partition'
+                )
+                CloneDevice(device_map['origin_root'], self.root_dir).clone(
+                    self._get_clone_devices('rootclone', device_map)
                 )
         elif self.root_filesystem_verity_blocks:
             root_target = device_map['root'].get_device()
@@ -1315,10 +1371,24 @@ class DiskBuilder:
                 filesystem.create_verification_metadata(
                     root_target
                 )
+            if device_map.get('rootclone1'):
+                log.info(
+                    '--> Dumping root clone data at extra partition'
+                )
+                CloneDevice(device_map['origin_root'], self.root_dir).clone(
+                    self._get_clone_devices('rootclone', device_map)
+                )
         else:
             system.sync_data(
                 self._get_exclude_list_for_root_data_sync(device_map)
             )
+            if device_map.get('rootclone1'):
+                log.info(
+                    '--> Dumping root clone data at extra partition'
+                )
+                CloneDevice(device_map['origin_root'], self.root_dir).clone(
+                    self._get_clone_devices('rootclone', device_map)
+                )
 
         if self.integrity_root and \
            self.root_filesystem_embed_integrity_metadata:
@@ -1437,3 +1507,12 @@ class DiskBuilder:
                     self.root_dir + ''.join(['/boot/', boot_names.initrd_name])
                 ]
             )
+
+    def _get_clone_devices(
+        self, match: str, device_map: Dict[str, DeviceProvider]
+    ) -> List[DeviceProvider]:
+        result = []
+        for map_name in sorted(device_map.keys()):
+            if map_name.startswith(match):
+                result.append(device_map.get(map_name))
+        return result
