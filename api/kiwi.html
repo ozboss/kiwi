@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi Package &mdash; KIWI NG 9.24.29 documentation</title>
+  <title>kiwi Package &mdash; KIWI NG 9.24.30 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
@@ -210,6 +210,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-bootloader-theme">&lt;preferences&gt;&lt;bootloader-theme&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-release-version">&lt;preferences&gt;&lt;release-version&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type">&lt;preferences&gt;&lt;type&gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type-luksformat">&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type-bootloader">&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type-containerconfig">&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type-vagrantconfig">&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</a></li>
@@ -2732,6 +2733,36 @@ to the specified instance of a Profile class</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="kiwi.defaults.unit_type">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kiwi.defaults.</span></span><span class="sig-name descname"><span class="pre">unit_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byte</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#kiwi.defaults.unit_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="kiwi.defaults.unit_type.byte">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">byte</span></span><a class="headerlink" href="#kiwi.defaults.unit_type.byte" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="kiwi.defaults.unit_type.gb">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gb</span></span><a class="headerlink" href="#kiwi.defaults.unit_type.gb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="kiwi.defaults.unit_type.kb">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kb</span></span><a class="headerlink" href="#kiwi.defaults.unit_type.kb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="kiwi.defaults.unit_type.mb">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mb</span></span><a class="headerlink" href="#kiwi.defaults.unit_type.mb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-kiwi.exceptions">
 <span id="kiwi-exceptions-module"></span><h2><a class="reference internal" href="#module-kiwi.exceptions" title="kiwi.exceptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.exceptions</span></code></a> Module<a class="headerlink" href="#module-kiwi.exceptions" title="Permalink to this headline">¶</a></h2>
@@ -2963,6 +2994,13 @@ for an unsupported container type is performed.</p>
 <dd><p>Bases: <a class="reference internal" href="#kiwi.exceptions.KiwiError" title="kiwi.exceptions.KiwiError"><code class="xref py py-class docutils literal notranslate"><span class="pre">kiwi.exceptions.KiwiError</span></code></a></p>
 <p>Exception raised if an error in the creation of the
 container archive happened.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="kiwi.exceptions.KiwiCredentialsError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kiwi.exceptions.</span></span><span class="sig-name descname"><span class="pre">KiwiCredentialsError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/exceptions.html#KiwiCredentialsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.exceptions.KiwiCredentialsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#kiwi.exceptions.KiwiError" title="kiwi.exceptions.KiwiError"><code class="xref py py-class docutils literal notranslate"><span class="pre">kiwi.exceptions.KiwiError</span></code></a></p>
+<p>Exception raised if required credentials information is missing</p>
 </dd></dl>
 
 <dl class="py exception">
@@ -3285,6 +3323,14 @@ could not be mounted.</p>
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kiwi.exceptions.</span></span><span class="sig-name descname"><span class="pre">KiwiOCIArchiveToolError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/exceptions.html#KiwiOCIArchiveToolError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.exceptions.KiwiOCIArchiveToolError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#kiwi.exceptions.KiwiError" title="kiwi.exceptions.KiwiError"><code class="xref py py-class docutils literal notranslate"><span class="pre">kiwi.exceptions.KiwiError</span></code></a></p>
 <p>Exception raised if the requested OCI archive tool is not supported</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="kiwi.exceptions.KiwiOffsetError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kiwi.exceptions.</span></span><span class="sig-name descname"><span class="pre">KiwiOffsetError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/exceptions.html#KiwiOffsetError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.exceptions.KiwiOffsetError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#kiwi.exceptions.KiwiError" title="kiwi.exceptions.KiwiError"><code class="xref py py-class docutils literal notranslate"><span class="pre">kiwi.exceptions.KiwiError</span></code></a></p>
+<p>Exception raised if the offset for a seek operation does not
+match the expected data to write</p>
 </dd></dl>
 
 <dl class="py exception">
@@ -4690,11 +4736,34 @@ the custom kiwi initrd system and not dracut.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="kiwi.runtime_checker.RuntimeChecker.check_luksformat_options_valid">
+<span class="sig-name descname"><span class="pre">check_luksformat_options_valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/kiwi/runtime_checker.html#RuntimeChecker.check_luksformat_options_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.runtime_checker.RuntimeChecker.check_luksformat_options_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Options set via the luksformat element are passed along
+to the cryptsetup tool. Only options that are known to
+the tool should be allowed. Thus this runtime check looks
+up the provided option names if they exist in the cryptsetup
+version used on the build host</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="kiwi.runtime_checker.RuntimeChecker.check_mediacheck_installed">
 <span class="sig-name descname"><span class="pre">check_mediacheck_installed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/kiwi/runtime_checker.html#RuntimeChecker.check_mediacheck_installed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.runtime_checker.RuntimeChecker.check_mediacheck_installed" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the image description enables the mediacheck attribute
 the required tools to run this check must be installed
 on the image build host</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.runtime_checker.RuntimeChecker.check_partuuid_persistency_type_used_with_mbr">
+<span class="sig-name descname"><span class="pre">check_partuuid_persistency_type_used_with_mbr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/kiwi/runtime_checker.html#RuntimeChecker.check_partuuid_persistency_type_used_with_mbr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.runtime_checker.RuntimeChecker.check_partuuid_persistency_type_used_with_mbr" title="Permalink to this definition">¶</a></dt>
+<dd><p>The devicepersistency setting by-partuuid can only be
+used in combination with a partition table type that
+supports UUIDs. In any other case Linux creates artificial
+values for PTUUID and PARTUUID from the disk signature
+which can change without touching the actual partition
+table. We consider this unsafe and only allow the use
+of by-partuuid in combination with partition tables that
+actually supports it properly.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -4865,6 +4934,28 @@ compression from the Defaults class is returned</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.runtime_config.RuntimeConfig.get_credentials_verification_metadata_signing_key_file">
+<span class="sig-name descname"><span class="pre">get_credentials_verification_metadata_signing_key_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/runtime_config.html#RuntimeConfig.get_credentials_verification_metadata_signing_key_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.runtime_config.RuntimeConfig.get_credentials_verification_metadata_signing_key_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return verification metadata signing key file, used for
+signature creation of rootfs verification metadata:</p>
+<dl class="simple">
+<dt>credentials:</dt><dd><ul class="simple">
+<li><p>verification_metadata_signing_key_file: …</p></li>
+</ul>
+</dd>
+</dl>
+<p>There is no default value for this setting available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>file path name or ‘’</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6128,6 +6219,34 @@ sections into account.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>list|None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.xml_state.XMLState.get_luks_credentials">
+<span class="sig-name descname"><span class="pre">get_luks_credentials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/kiwi/xml_state.html#XMLState.get_luks_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.xml_state.XMLState.get_luks_credentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return key or passphrase credentials to open the luks pool</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>data</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.xml_state.XMLState.get_luks_format_options">
+<span class="sig-name descname"><span class="pre">get_luks_format_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/kiwi/xml_state.html#XMLState.get_luks_format_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.xml_state.XMLState.get_luks_format_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of luks format options</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of options</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>

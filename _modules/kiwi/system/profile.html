@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.system.profile &mdash; KIWI NG 9.24.29 documentation</title>
+  <title>kiwi.system.profile &mdash; KIWI NG 9.24.30 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
@@ -207,6 +207,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-bootloader-theme">&lt;preferences&gt;&lt;bootloader-theme&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-release-version">&lt;preferences&gt;&lt;release-version&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type">&lt;preferences&gt;&lt;type&gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-luksformat">&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-bootloader">&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-containerconfig">&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-vagrantconfig">&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</a></li>
@@ -994,7 +995,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dot_profile</span><span class="p">[</span><span class="s1">&#39;kiwi_startsector&#39;</span><span class="p">]</span> <span class="o">=</span> \
             <span class="bp">self</span><span class="o">.</span><span class="n">xml_state</span><span class="o">.</span><span class="n">get_disk_start_sector</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dot_profile</span><span class="p">[</span><span class="s1">&#39;kiwi_luks_empty_passphrase&#39;</span><span class="p">]</span> <span class="o">=</span> \
-            <span class="kc">True</span> <span class="k">if</span> <span class="n">type_section</span><span class="o">.</span><span class="n">get_luks</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xml_state</span><span class="o">.</span><span class="n">get_luks_credentials</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span>
 
     <span class="k">def</span> <span class="nf">_profile_names_to_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># kiwi_profiles</span>

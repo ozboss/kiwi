@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.filesystem Package &mdash; KIWI NG 9.24.29 documentation</title>
+  <title>kiwi.filesystem Package &mdash; KIWI NG 9.24.30 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
@@ -210,6 +210,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-bootloader-theme">&lt;preferences&gt;&lt;bootloader-theme&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-release-version">&lt;preferences&gt;&lt;release-version&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type">&lt;preferences&gt;&lt;type&gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type-luksformat">&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type-bootloader">&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type-containerconfig">&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../image_description/elements.html#preferences-type-vagrantconfig">&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</a></li>
@@ -685,13 +686,19 @@ creation. In most cases the DeviceProvider is a LoopDevice</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.base.FileSystemBase.create_on_device">
-<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/base.html#FileSystemBase.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.base.FileSystemBase.create_on_device" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/base.html#FileSystemBase.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.base.FileSystemBase.create_on_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create filesystem on block device</p>
 <p>Implement in specialized filesystem class for filesystems which
 requires a block device for creation, e.g ext4.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – label name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – label name</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – size value, can also be counted from the end via -X
+The value is interpreted in units of: unit</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – unit name. Default unit is set to: defaults.UNIT.kb</p></li>
+<li><p><strong>uuid</strong> (<em>str</em>) – UUID name</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -708,6 +715,35 @@ requires a data tree for creation, e.g squashfs.</p>
 <li><p><strong>filename</strong> (<em>string</em>) – result file path name</p></li>
 <li><p><strong>label</strong> (<em>string</em>) – label name</p></li>
 <li><p><strong>exclude</strong> (<em>list</em>) – list of exclude dirs/files</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.base.FileSystemBase.create_verification_metadata">
+<span class="sig-name descname"><span class="pre">create_verification_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_node</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/kiwi/filesystem/base.html#FileSystemBase.create_verification_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.base.FileSystemBase.create_verification_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write verification block at the end of the device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>device_node</strong> (<em>str</em>) – Target device node, if not specified the root device
+from this instance is used</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.base.FileSystemBase.create_verity_layer">
+<span class="sig-name descname"><span class="pre">create_verity_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/base.html#FileSystemBase.create_verity_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.base.FileSystemBase.create_verity_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create veritysetup on device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block</strong> (<em>int</em>) – Number of blocks to use for veritysetup.
+If not specified the entire root device is used</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Target filename to use for VeritySetup.
+If not specified the filename or block special
+provided at object construction time is used</p></li>
 </ul>
 </dd>
 </dl>
@@ -780,11 +816,17 @@ overrides the default custom argument hash</p>
 <p><strong>Implements creation of btrfs filesystem</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.btrfs.FileSystemBtrfs.create_on_device">
-<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/btrfs.html#FileSystemBtrfs.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.btrfs.FileSystemBtrfs.create_on_device" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/btrfs.html#FileSystemBtrfs.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.btrfs.FileSystemBtrfs.create_on_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create btrfs filesystem on block device</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – label name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – label name</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – size value, can also be counted from the end via -X
+The value is interpreted in units of: unit</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – unit name. Default unit is set to: defaults.UNIT.kb</p></li>
+<li><p><strong>uuid</strong> (<em>str</em>) – UUID name</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -843,11 +885,17 @@ clicfs embeded filesystem</p>
 <p><strong>Implements creation of ext2 filesystem</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.ext2.FileSystemExt2.create_on_device">
-<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext2.html#FileSystemExt2.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext2.FileSystemExt2.create_on_device" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext2.html#FileSystemExt2.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext2.FileSystemExt2.create_on_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create ext2 filesystem on block device</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – label name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – label name</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – size value, can also be counted from the end via -X
+The value is interpreted in units of: unit</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – unit name. Default unit is set to: defaults.UNIT.kb</p></li>
+<li><p><strong>uuid</strong> (<em>str</em>) – UUID name</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -864,11 +912,17 @@ clicfs embeded filesystem</p>
 <p><strong>Implements creation of ext3 filesystem</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.ext3.FileSystemExt3.create_on_device">
-<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext3.html#FileSystemExt3.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext3.FileSystemExt3.create_on_device" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext3.html#FileSystemExt3.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext3.FileSystemExt3.create_on_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create ext3 filesystem on block device</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – label name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – label name</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – size value, can also be counted from the end via -X
+The value is interpreted in units of: unit</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – unit name. Default unit is set to: defaults.UNIT.kb</p></li>
+<li><p><strong>uuid</strong> (<em>str</em>) – UUID name</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -885,11 +939,17 @@ clicfs embeded filesystem</p>
 <p><strong>Implements creation of ext4 filesystem</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.ext4.FileSystemExt4.create_on_device">
-<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext4.html#FileSystemExt4.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext4.FileSystemExt4.create_on_device" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext4.html#FileSystemExt4.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext4.FileSystemExt4.create_on_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create ext4 filesystem on block device</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – label name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – label name</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – size value, can also be counted from the end via -X
+The value is interpreted in units of: unit</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – unit name. Default unit is set to: defaults.UNIT.kb</p></li>
+<li><p><strong>uuid</strong> (<em>str</em>) – UUID name</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -906,11 +966,17 @@ clicfs embeded filesystem</p>
 <p><strong>Implements creation of fat16 filesystem</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.fat16.FileSystemFat16.create_on_device">
-<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/fat16.html#FileSystemFat16.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.fat16.FileSystemFat16.create_on_device" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/fat16.html#FileSystemFat16.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.fat16.FileSystemFat16.create_on_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create fat16 filesystem on block device</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – label name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – label name</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – size value, can also be counted from the end via -X
+The value is interpreted in units of: unit</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – unit name. Default unit is set to: defaults.UNIT.kb</p></li>
+<li><p><strong>uuid</strong> (<em>str</em>) – Volume Label, there is no real UUID on fat</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -924,14 +990,20 @@ clicfs embeded filesystem</p>
 <dt class="sig sig-object py" id="kiwi.filesystem.fat32.FileSystemFat32">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">kiwi.filesystem.fat32.</span></span><span class="sig-name descname"><span class="pre">FileSystemFat32</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="kiwi.storage.html#kiwi.storage.device_provider.DeviceProvider" title="kiwi.storage.device_provider.DeviceProvider"><span class="pre">kiwi.storage.device_provider.DeviceProvider</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/fat32.html#FileSystemFat32"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.fat32.FileSystemFat32" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#kiwi.filesystem.base.FileSystemBase" title="kiwi.filesystem.base.FileSystemBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">kiwi.filesystem.base.FileSystemBase</span></code></a></p>
-<p><strong>Implements creation of fat16 filesystem</strong></p>
+<p><strong>Implements creation of fat32 filesystem</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.fat32.FileSystemFat32.create_on_device">
-<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/fat32.html#FileSystemFat32.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.fat32.FileSystemFat32.create_on_device" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/fat32.html#FileSystemFat32.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.fat32.FileSystemFat32.create_on_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create fat32 filesystem on block device</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – label name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – label name</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – size value, can also be counted from the end via -X
+The value is interpreted in units of: unit</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – unit name. Default unit is set to: defaults.UNIT.kb</p></li>
+<li><p><strong>uuid</strong> (<em>str</em>) – Volume Label, there is no real UUID on fat</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1043,11 +1115,17 @@ thus this parameter is not used</p>
 <p><strong>Implements creation of xfs filesystem</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.xfs.FileSystemXfs.create_on_device">
-<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/xfs.html#FileSystemXfs.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.xfs.FileSystemXfs.create_on_device" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_on_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'k'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/xfs.html#FileSystemXfs.create_on_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.xfs.FileSystemXfs.create_on_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create xfs filesystem on block device</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label</strong> (<em>string</em>) – label name</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – label name</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – size value, can also be counted from the end via -X
+The value is interpreted in units of: unit</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) – unit name. Default unit is set to: defaults.UNIT.kb</p></li>
+<li><p><strong>uuid</strong> (<em>str</em>) – UUID name</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

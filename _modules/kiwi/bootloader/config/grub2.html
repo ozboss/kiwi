@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.bootloader.config.grub2 &mdash; KIWI NG 9.24.29 documentation</title>
+  <title>kiwi.bootloader.config.grub2 &mdash; KIWI NG 9.24.30 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
@@ -207,6 +207,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../image_description/elements.html#preferences-bootloader-theme">&lt;preferences&gt;&lt;bootloader-theme&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../image_description/elements.html#preferences-release-version">&lt;preferences&gt;&lt;release-version&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../image_description/elements.html#preferences-type">&lt;preferences&gt;&lt;type&gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../image_description/elements.html#preferences-type-luksformat">&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../image_description/elements.html#preferences-type-bootloader">&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../image_description/elements.html#preferences-type-containerconfig">&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../image_description/elements.html#preferences-type-vagrantconfig">&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</a></li>
@@ -1305,6 +1306,8 @@
 <span class="sd">        * GRUB_TERMINAL</span>
 <span class="sd">        * GRUB_DISTRIBUTOR</span>
 <span class="sd">        * GRUB_DISABLE_LINUX_UUID</span>
+<span class="sd">        * GRUB_DISABLE_LINUX_PARTUUID</span>
+<span class="sd">        * GRUB_ENABLE_LINUX_LABEL</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">grub_default_entries</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;GRUB_TIMEOUT&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
@@ -1315,7 +1318,11 @@
             <span class="sa">r</span><span class="s1">&#39;(^root=[^\s]+)|( root=[^\s]+)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmdline</span>
         <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">persistency_type</span> <span class="o">==</span> <span class="s1">&#39;by-label&#39;</span><span class="p">:</span>
+            <span class="n">grub_default_entries</span><span class="p">[</span><span class="s1">&#39;GRUB_ENABLE_LINUX_LABEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
             <span class="n">grub_default_entries</span><span class="p">[</span><span class="s1">&#39;GRUB_DISABLE_LINUX_UUID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">persistency_type</span> <span class="o">==</span> <span class="s1">&#39;by-partuuid&#39;</span><span class="p">:</span>
+            <span class="n">grub_default_entries</span><span class="p">[</span><span class="s1">&#39;GRUB_DISABLE_LINUX_UUID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+            <span class="n">grub_default_entries</span><span class="p">[</span><span class="s1">&#39;GRUB_DISABLE_LINUX_PARTUUID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;false&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayname</span><span class="p">:</span>
             <span class="n">grub_default_entries</span><span class="p">[</span><span class="s1">&#39;GRUB_DISTRIBUTOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="si">{0}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">displayname</span>

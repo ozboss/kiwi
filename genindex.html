@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; KIWI NG 9.24.29 documentation</title>
+  <title>Index &mdash; KIWI NG 9.24.30 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -207,6 +207,7 @@
 <li class="toctree-l4"><a class="reference internal" href="image_description/elements.html#preferences-bootloader-theme">&lt;preferences&gt;&lt;bootloader-theme&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="image_description/elements.html#preferences-release-version">&lt;preferences&gt;&lt;release-version&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="image_description/elements.html#preferences-type">&lt;preferences&gt;&lt;type&gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_description/elements.html#preferences-type-luksformat">&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="image_description/elements.html#preferences-type-bootloader">&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="image_description/elements.html#preferences-type-containerconfig">&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="image_description/elements.html#preferences-type-vagrantconfig">&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</a></li>
@@ -801,6 +802,8 @@
 </li>
       <li><a href="api/kiwi.bootloader.template.html#kiwi.bootloader.template.isolinux.BootLoaderTemplateIsoLinux">BootLoaderTemplateIsoLinux (class in kiwi.bootloader.template.isolinux)</a>
 </li>
+      <li><a href="api/kiwi.html#kiwi.defaults.unit_type.byte">byte (kiwi.defaults.unit_type property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -859,7 +862,11 @@
 </li>
       <li><a href="api/kiwi.html#kiwi.runtime_checker.RuntimeChecker.check_initrd_selection_required">check_initrd_selection_required() (kiwi.runtime_checker.RuntimeChecker method)</a>
 </li>
+      <li><a href="api/kiwi.html#kiwi.runtime_checker.RuntimeChecker.check_luksformat_options_valid">check_luksformat_options_valid() (kiwi.runtime_checker.RuntimeChecker method)</a>
+</li>
       <li><a href="api/kiwi.html#kiwi.runtime_checker.RuntimeChecker.check_mediacheck_installed">check_mediacheck_installed() (kiwi.runtime_checker.RuntimeChecker method)</a>
+</li>
+      <li><a href="api/kiwi.html#kiwi.runtime_checker.RuntimeChecker.check_partuuid_persistency_type_used_with_mbr">check_partuuid_persistency_type_used_with_mbr() (kiwi.runtime_checker.RuntimeChecker method)</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.runtime_checker.RuntimeChecker.check_repositories_configured">check_repositories_configured() (kiwi.runtime_checker.RuntimeChecker method)</a>
 </li>
@@ -979,8 +986,6 @@
 </li>
       <li><a href="api/kiwi.system.html#kiwi.system.kernel.Kernel.copy_xen_hypervisor">copy_xen_hypervisor() (kiwi.system.kernel.Kernel method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/kiwi.archive.html#kiwi.archive.cpio.ArchiveCpio.create">create() (kiwi.archive.cpio.ArchiveCpio method)</a>
 
       <ul>
@@ -1017,6 +1022,8 @@
         <li><a href="api/kiwi.system.html#kiwi.system.root_init.RootInit.create">(kiwi.system.root_init.RootInit method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/kiwi.storage.html#kiwi.storage.disk.Disk.create_boot_partition">create_boot_partition() (kiwi.storage.disk.Disk method)</a>
 </li>
       <li><a href="api/kiwi.storage.subformat.html#kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase.create_box_img">create_box_img() (kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase method)</a>
@@ -1149,6 +1156,18 @@
 </li>
       <li><a href="api/kiwi.storage.html#kiwi.storage.disk.Disk.create_swap_partition">create_swap_partition() (kiwi.storage.disk.Disk method)</a>
 </li>
+      <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.create_verification_metadata">create_verification_metadata() (kiwi.filesystem.base.FileSystemBase method)</a>
+
+      <ul>
+        <li><a href="api/kiwi.volume_manager.html#kiwi.volume_manager.base.VolumeManagerBase.create_verification_metadata">(kiwi.volume_manager.base.VolumeManagerBase method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.create_verity_layer">create_verity_layer() (kiwi.filesystem.base.FileSystemBase method)</a>
+
+      <ul>
+        <li><a href="api/kiwi.volume_manager.html#kiwi.volume_manager.base.VolumeManagerBase.create_verity_layer">(kiwi.volume_manager.base.VolumeManagerBase method)</a>
+</li>
+      </ul></li>
       <li><a href="api/kiwi.volume_manager.html#kiwi.volume_manager.base.VolumeManagerBase.create_volume_paths_in_root_dir">create_volume_paths_in_root_dir() (kiwi.volume_manager.base.VolumeManagerBase method)</a>
 </li>
       <li><a href="api/kiwi.volume_manager.html#kiwi.volume_manager.base.VolumeManagerBase.create_volumes">create_volumes() (kiwi.volume_manager.base.VolumeManagerBase method)</a>
@@ -1385,6 +1404,8 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/kiwi.html#kiwi.defaults.unit_type.gb">gb (kiwi.defaults.unit_type property)</a>
+</li>
       <li><a href="api/kiwi.html#kiwi.defaults.Defaults.get">get() (kiwi.defaults.Defaults method)</a>
 
       <ul>
@@ -1530,6 +1551,8 @@
       <li><a href="api/kiwi.container.setup.html#kiwi.container.setup.base.ContainerSetupBase.get_container_name">get_container_name() (kiwi.container.setup.base.ContainerSetupBase method)</a>
 </li>
       <li><a href="api/kiwi.bootloader.config.html#kiwi.bootloader.config.base.BootLoaderConfigBase.get_continue_on_timeout">get_continue_on_timeout() (kiwi.bootloader.config.base.BootLoaderConfigBase method)</a>
+</li>
+      <li><a href="api/kiwi.html#kiwi.runtime_config.RuntimeConfig.get_credentials_verification_metadata_signing_key_file">get_credentials_verification_metadata_signing_key_file() (kiwi.runtime_config.RuntimeConfig method)</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.defaults.Defaults.get_custom_rpm_bootstrap_macro_name">get_custom_rpm_bootstrap_macro_name() (kiwi.defaults.Defaults static method)</a>
 </li>
@@ -1756,6 +1779,10 @@
       <li><a href="api/kiwi.html#kiwi.xml_state.XMLState.get_locale">get_locale() (kiwi.xml_state.XMLState method)</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.logger.Logger.get_logfile">get_logfile() (kiwi.logger.Logger method)</a>
+</li>
+      <li><a href="api/kiwi.html#kiwi.xml_state.XMLState.get_luks_credentials">get_luks_credentials() (kiwi.xml_state.XMLState method)</a>
+</li>
+      <li><a href="api/kiwi.html#kiwi.xml_state.XMLState.get_luks_format_options">get_luks_format_options() (kiwi.xml_state.XMLState method)</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.defaults.Defaults.get_luks_key_length">get_luks_key_length() (kiwi.defaults.Defaults static method)</a>
 </li>
@@ -2181,6 +2208,8 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/kiwi.html#kiwi.defaults.unit_type.kb">kb (kiwi.defaults.unit_type property)</a>
+</li>
       <li><a href="api/kiwi.system.html#kiwi.system.kernel.Kernel">Kernel (class in kiwi.system.kernel)</a>
 </li>
       <li><a href="api/kiwi.boot.image.html#kiwi.boot.image.base.boot_names_type.kernel_name">kernel_name (kiwi.boot.image.base.boot_names_type property)</a>
@@ -3289,6 +3318,8 @@
 </li>
       <li><a href="api/kiwi.html#kiwi.exceptions.KiwiContainerSetupError">KiwiContainerSetupError</a>
 </li>
+      <li><a href="api/kiwi.html#kiwi.exceptions.KiwiCredentialsError">KiwiCredentialsError</a>
+</li>
       <li><a href="api/kiwi.html#kiwi.exceptions.KiwiCustomPartitionConflictError">KiwiCustomPartitionConflictError</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.exceptions.KiwiDataStructureError">KiwiDataStructureError</a>
@@ -3368,6 +3399,8 @@
       <li><a href="api/kiwi.html#kiwi.exceptions.KiwiNotImplementedError">KiwiNotImplementedError</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.exceptions.KiwiOCIArchiveToolError">KiwiOCIArchiveToolError</a>
+</li>
+      <li><a href="api/kiwi.html#kiwi.exceptions.KiwiOffsetError">KiwiOffsetError</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.exceptions.KiwiPackageManagerSetupError">KiwiPackageManagerSetupError</a>
 </li>
@@ -3532,6 +3565,8 @@
 </li>
       </ul></li>
       <li><a href="api/kiwi.utils.html#kiwi.utils.checksum.Checksum.matches">matches() (kiwi.utils.checksum.Checksum method)</a>
+</li>
+      <li><a href="api/kiwi.html#kiwi.defaults.unit_type.mb">mb (kiwi.defaults.unit_type property)</a>
 </li>
       <li><a href="api/kiwi.storage.html#kiwi.storage.disk.ptable_entry_type.mbsize">mbsize (kiwi.storage.disk.ptable_entry_type property)</a>
 </li>
@@ -4599,6 +4634,8 @@
 </li>
       </ul></li>
       <li><a href="api/kiwi.utils.html#kiwi.utils.compress.Compress.uncompress">uncompress() (kiwi.utils.compress.Compress method)</a>
+</li>
+      <li><a href="api/kiwi.html#kiwi.defaults.unit_type">unit_type (class in kiwi.defaults)</a>
 </li>
       <li><a href="api/kiwi.package_manager.html#kiwi.package_manager.base.PackageManagerBase.update">update() (kiwi.package_manager.base.PackageManagerBase method)</a>
 

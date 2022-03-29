@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.storage.setup &mdash; KIWI NG 9.24.29 documentation</title>
+  <title>kiwi.storage.setup &mdash; KIWI NG 9.24.30 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
@@ -207,6 +207,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-bootloader-theme">&lt;preferences&gt;&lt;bootloader-theme&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-release-version">&lt;preferences&gt;&lt;release-version&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type">&lt;preferences&gt;&lt;type&gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-luksformat">&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-bootloader">&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-containerconfig">&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-vagrantconfig">&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</a></li>
@@ -712,7 +713,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bootpart_mbytes</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_bootpartsize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spare_part_mbytes</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">get_build_type_spare_part_size</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mdraid</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_mdraid</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">luks</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_luks</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">luks</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">get_luks_credentials</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">volume_manager</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">get_volume_management</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bootloader</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">get_build_type_bootloader_name</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oemconfig</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">get_build_type_oemconfig_section</span><span class="p">()</span>

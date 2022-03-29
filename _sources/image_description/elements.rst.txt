@@ -485,11 +485,22 @@ kernelcmdline="string":
   Additional kernel parameters passed to the kernel by the
   bootloader.
 
-luks="passphrase":
-  Supplying a value will trigger the encryption of the partitions
-  using the LUKS extension and using the provided string as the
-  password. Note that the password must be entered when booting the
-  appliance!
+luks="passphrase|file:///path/to/keyfile":
+  Supplying a value will trigger the encryption of the partition
+  serving the root filesystem using the LUKS extension. The supplied
+  value represents either the passphrase string or the location of
+  a key file if specified as `file://...` resource. When using
+  a key file it is in the responsibility of the user how
+  this key file is actually being used. By default any
+  distribution will just open an interactive dialog asking
+  for the credentials at boot time !
+
+luks_version="luks|luks2":
+  Specify which `LUKS` version should be used. If not set and by
+  default `luks` is used. The specification of the `LUKS` version
+  allows using a different set of `luksformat` options. To
+  investigate the differences between the two please consult the
+  `cryptsetup` manual page.
 
 target_blocksize="number":
   Specifies the image blocksize in bytes which has to
@@ -554,6 +565,47 @@ devicepersistency="by-uuid|by-label":
 squashfscompression="uncompressed|gzip|lzo|lz4|xz|zstd":
   Specifies the compression type for mksquashfs
 
+verity_blocks="number|all"
+  For the `oem` type only, specifies to create a dm verity hash
+  from the number of given blocks (or all) placed at the end of the
+  root filesystem For later verification of the device,
+  the credentials information produced by `veritysetup` from the
+  cryptsetup tools are needed. This data as of now is only printed
+  as debugging information to the build log file. A concept to
+  persistently store the verification metadata as part of the
+  partition(s) will be a next step.
+
+embed_verity_metadata="true|false"
+  For the `oem` type only, and in combination with the `verity_blocks`
+  attribute, specifies to write a binary block at the end of the
+  partition serving the root filesystem, containing information
+  for `dm_verity` verification in the following format:
+
+  .. code:: bash
+
+     |header|0xFF|dm_verity_credentials|0xFF|0x0|
+
+  header:
+    Is a string of the following information separated by spaces
+
+    * **version**: currently set to `1`
+    * **fstype**: name of `filesystem` attribute
+    * **access**: either `ro` or `rw` depending on the filesystem capabilities
+    * `verity`: fixed identifier value
+
+  dm_verity_credentials:
+    Is a string of the following information separated by spaces
+
+    * **hash_type**: hash type name as returned by `veritysetup`
+    * **data_blksize**: data blocksize as returned by `veritysetup`
+    * **hash_blksize**: hash blocksize as returned by `veritysetup`
+    * **data_blocks**: number of data blocks as returned by `veritysetup`
+    * **hash_start_block**:
+      hash start block as required by the kernel to construct the device map
+    * **algorithm**: hash algorithm as returned by `veritysetup`
+    * **root_hash**: root hash as returned by `veritysetup`
+    * **salt**: salt hash as returned by `veritysetup`
+
 overlayroot="true|false"
   For the `oem` type only, specifies to use an `overlayfs` based root
   filesystem consisting out of a squashfs compressed read-only root
@@ -581,51 +633,6 @@ overlayroot="true|false"
   will not have any effect because the write partition will be
   resized on first boot to the available disk space.
 
-overlayroot_verity_blocks="number|all"
-  For the `oem` type only, specifies to create a dm verity hash
-  from the number of given blocks (or all) placed at the end of the squashfs
-  compressed read-only root filesystem. For later verification of the device,
-  the credentials information produced by `veritysetup` from the
-  cryptsetup tools, is created as a file in `/boot/overlayroot.verity`
-  and is stored as such into the image by default. The verification
-  file contents looks like the following example:
-
-  .. code:: bash
-
-     Hash type:         1
-     Data blocks:       10
-     Data block size:   4096
-     Hash block size:   4096
-     Hash algorithm:    sha256
-     Salt:              -SECRET-
-     Root hash:         -SECRET-
-     PARTUUID:          56d4ec24-393b-4ef5-af6b-6a8e1130b2c6
-     Root hashoffset:   226885632
-     Superblock:        --no-superblock
-
-  For verification of the device using the above information the
-  following `veritysetup` call is required
-
-  .. code:: bash
-
-     veritysetup verify \
-         /dev/matching[PARTUUID] /dev/matching[PARTUUID] \
-         "Value of Root hash:" \
-         --debug \
-         --no-superblock \
-         --salt="Value of Salt:" \
-         --data-blocks="Value of Data Blocks:" \
-         --hash-offset="Value of Root hashoffset:"
-
-  .. note::
-
-     It is a responsibility of the author of the image description
-     how to handle the credentials file in the desired way. The
-     standard way of {kiwi} to place it in `/boot` is most probably
-     not appropriate. One option to handle the credentials data is
-     as part of a `disk.sh` script which would allow to access and
-     manage the information in a custom way.
-
 overlayroot_write_partition="true|false"
   For the `oem` type only, allows to specify if the extra read-write
   partition in an `overlayroot` setup should be created or not.
@@ -649,7 +656,7 @@ overlayroot_readonly_partsize="mbsize"
   If the value can be provided beforehand this also speeds
   up the build process significantly
 
-bootfilesystem="ext2|ext3|ext4|fat32|fat16":
+bootfilesystem="btrfs|ext2|ext3|ext4|xfs|fat32|fat16":
   If an extra boot partition is required this attribute
   specify which filesystem should be used for it. The
   type of the selected bootloader might overwrite this
@@ -785,6 +792,24 @@ publisher="string":
 
 The following sections shows the supported child elements of the `type`
 element including references to their usage in a detailed type setup:
+
+.. _preferences-type-luksformat:
+
+<preferences><type><luksformat>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The `luksformat` element is used to specify additional luks options
+passed on to the `cryptsetup luksFormat` call. The element requires
+the attribute `luks` to be set in the `<type>` section referring to
+`luksformat`. Several custom settings related to the LUKS and LUKS2
+format features can be setup. For example the setup of
+the `dm_integrity` feature:
+
+.. code:: xml
+
+   <luksformat>
+     <option name="--cipher" value="aes-gcm-random"/>
+     <option name="--integrity" value="aead"/>
+   </luksformat>
 
 .. _preferences-type-bootloader:
 

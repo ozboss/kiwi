@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.filesystem.isofs &mdash; KIWI NG 9.24.29 documentation</title>
+  <title>kiwi.filesystem.isofs &mdash; KIWI NG 9.24.30 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
@@ -207,6 +207,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-bootloader-theme">&lt;preferences&gt;&lt;bootloader-theme&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-release-version">&lt;preferences&gt;&lt;release-version&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type">&lt;preferences&gt;&lt;type&gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-luksformat">&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-bootloader">&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-containerconfig">&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-vagrantconfig">&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</a></li>
@@ -703,6 +704,7 @@
 <span class="sd">        :param string label: unused</span>
 <span class="sd">        :param list exclude: unused</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="n">meta_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_args</span><span class="p">[</span><span class="s1">&#39;meta_data&#39;</span><span class="p">]</span>
         <span class="n">efi_mode</span> <span class="o">=</span> <span class="n">meta_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;efi_mode&#39;</span><span class="p">)</span>
         <span class="n">ofw_mode</span> <span class="o">=</span> <span class="n">meta_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ofw_mode&#39;</span><span class="p">)</span>
@@ -718,7 +720,7 @@
         <span class="k">if</span> <span class="n">efi_loader</span><span class="p">:</span>
             <span class="n">iso_tool</span><span class="o">.</span><span class="n">add_efi_loader_parameters</span><span class="p">(</span><span class="n">efi_loader</span><span class="p">)</span>
 
-        <span class="n">iso_tool</span><span class="o">.</span><span class="n">create_iso</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div></div>
+        <span class="n">iso_tool</span><span class="o">.</span><span class="n">create_iso</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

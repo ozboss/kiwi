@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.filesystem.base &mdash; KIWI NG 9.24.29 documentation</title>
+  <title>kiwi.filesystem.base &mdash; KIWI NG 9.24.30 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
@@ -207,6 +207,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-bootloader-theme">&lt;preferences&gt;&lt;bootloader-theme&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-release-version">&lt;preferences&gt;&lt;release-version&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type">&lt;preferences&gt;&lt;type&gt;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-luksformat">&lt;preferences&gt;&lt;type&gt;&lt;luksformat&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-bootloader">&lt;preferences&gt;&lt;type&gt;&lt;bootloader&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-containerconfig">&lt;preferences&gt;&lt;type&gt;&lt;containerconfig&gt;</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../image_description/elements.html#preferences-type-vagrantconfig">&lt;preferences&gt;&lt;type&gt;&lt;vagrantconfig&gt;</a></li>
@@ -683,11 +684,14 @@
 <span class="p">)</span>
 
 <span class="c1"># project</span>
+<span class="kn">import</span> <span class="nn">kiwi.defaults</span> <span class="k">as</span> <span class="nn">defaults</span>
+
 <span class="kn">from</span> <span class="nn">kiwi.defaults</span> <span class="kn">import</span> <span class="n">Defaults</span>
 <span class="kn">from</span> <span class="nn">kiwi.utils.sync</span> <span class="kn">import</span> <span class="n">DataSync</span>
 <span class="kn">from</span> <span class="nn">kiwi.mount_manager</span> <span class="kn">import</span> <span class="n">MountManager</span>
 <span class="kn">from</span> <span class="nn">kiwi.command</span> <span class="kn">import</span> <span class="n">Command</span>
 <span class="kn">from</span> <span class="nn">kiwi.storage.device_provider</span> <span class="kn">import</span> <span class="n">DeviceProvider</span>
+<span class="kn">from</span> <span class="nn">kiwi.utils.veritysetup</span> <span class="kn">import</span> <span class="n">VeritySetup</span>
 
 <span class="kn">from</span> <span class="nn">kiwi.exceptions</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">KiwiFileSystemSyncError</span>
@@ -727,10 +731,11 @@
 
         <span class="c1"># filesystems created without a block device stores the result</span>
         <span class="c1"># filesystem file name here</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">custom_args</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">post_init</span><span class="p">(</span><span class="n">custom_args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">veritysetup</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">VeritySetup</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="FileSystemBase.post_init"><a class="viewcode-back" href="../../../api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.post_init">[docs]</a>    <span class="k">def</span> <span class="nf">post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">custom_args</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -766,14 +771,23 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fs_attributes&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">custom_args</span><span class="p">[</span><span class="s1">&#39;fs_attributes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="FileSystemBase.create_on_device"><a class="viewcode-back" href="../../../api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.create_on_device">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="FileSystemBase.create_on_device"><a class="viewcode-back" href="../../../api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.create_on_device">[docs]</a>    <span class="k">def</span> <span class="nf">create_on_device</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">kb</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create filesystem on block device</span>
 
 <span class="sd">        Implement in specialized filesystem class for filesystems which</span>
 <span class="sd">        requires a block device for creation, e.g ext4.</span>
 
-<span class="sd">        :param string label: label name</span>
+<span class="sd">        :param str label: label name</span>
+<span class="sd">        :param int size:</span>
+<span class="sd">            size value, can also be counted from the end via -X</span>
+<span class="sd">            The value is interpreted in units of: unit</span>
+<span class="sd">        :param str unit:</span>
+<span class="sd">            unit name. Default unit is set to: defaults.UNIT.kb</span>
+<span class="sd">        :param str uuid: UUID name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
@@ -834,6 +848,51 @@
             <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">Defaults</span><span class="o">.</span><span class="n">get_sync_options</span><span class="p">()</span>
         <span class="p">)</span></div>
 
+<div class="viewcode-block" id="FileSystemBase.create_verity_layer"><a class="viewcode-back" href="../../../api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.create_verity_layer">[docs]</a>    <span class="k">def</span> <span class="nf">create_verity_layer</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">blocks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create veritysetup on device</span>
+
+<span class="sd">        :param int block:</span>
+<span class="sd">            Number of blocks to use for veritysetup.</span>
+<span class="sd">            If not specified the entire root device is used</span>
+<span class="sd">        :param str filename:</span>
+<span class="sd">            Target filename to use for VeritySetup.</span>
+<span class="sd">            If not specified the filename or block special</span>
+<span class="sd">            provided at object construction time is used</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">on_file_name</span> <span class="o">=</span> <span class="n">filename</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">veritysetup</span> <span class="o">=</span> <span class="n">VeritySetup</span><span class="p">(</span>
+            <span class="n">on_file_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_provider</span><span class="o">.</span><span class="n">get_device</span><span class="p">(),</span>
+            <span class="n">blocks</span>
+        <span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s1">&#39;--&gt; Creating dm verity hash (</span><span class="si">{0}</span><span class="s1"> blocks)...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">blocks</span> <span class="ow">or</span> <span class="s1">&#39;all&#39;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s1">&#39;--&gt; dm verity metadata: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">veritysetup</span><span class="o">.</span><span class="n">format</span><span class="p">())</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FileSystemBase.create_verification_metadata"><a class="viewcode-back" href="../../../api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.create_verification_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">create_verification_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_node</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write verification block at the end of the device</span>
+
+<span class="sd">        :param str device_node:</span>
+<span class="sd">            Target device node, if not specified the root device</span>
+<span class="sd">            from this instance is used</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">veritysetup</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;--&gt; Creating verification metadata...&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">veritysetup</span><span class="o">.</span><span class="n">create_verity_verification_metadata</span><span class="p">()</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;--&gt; Signing verification metadata...&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">veritysetup</span><span class="o">.</span><span class="n">sign_verification_metadata</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">veritysetup</span><span class="o">.</span><span class="n">write_verification_metadata</span><span class="p">(</span>
+                <span class="n">device_node</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_provider</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span>
+            <span class="p">)</span></div>
+
 <div class="viewcode-block" id="FileSystemBase.umount"><a class="viewcode-back" href="../../../api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.umount">[docs]</a>    <span class="k">def</span> <span class="nf">umount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Umounts the filesystem in case it is mounted, does nothing otherwise</span>
@@ -842,6 +901,67 @@
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;umount </span><span class="si">%s</span><span class="s1"> instance&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filesystem_mount</span><span class="o">.</span><span class="n">umount</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filesystem_mount</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="nf">_map_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">from_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">to_unit</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return byte size value for given size and unit</span>
+
+<span class="sd">        :param float size:</span>
+<span class="sd">            requested filesystem size. The value is interpreted</span>
+<span class="sd">            by the given from_unit.</span>
+
+<span class="sd">        :param str from_unit: source unit</span>
+<span class="sd">        :param str to_unit: target unit</span>
+
+<span class="sd">        :return: size value in unit: to_unit</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unit_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">byte</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">kb</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+            <span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">mb</span><span class="p">:</span> <span class="mi">1048576</span><span class="p">,</span>
+            <span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">gb</span><span class="p">:</span> <span class="mi">1073741824</span>
+        <span class="p">}</span>
+        <span class="n">byte_size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">*</span> <span class="n">unit_map</span><span class="p">[</span><span class="n">from_unit</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">byte_size</span> <span class="o">/</span> <span class="n">unit_map</span><span class="p">[</span><span class="n">to_unit</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_fs_size</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">kb</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate filesystem size parameter in number of blocksize</span>
+<span class="sd">        blocks. If the given size is &lt;= 0 the calculation is done from</span>
+<span class="sd">        the actual size of the block device reduced by the given size</span>
+
+<span class="sd">        :param float size:</span>
+<span class="sd">            requested filesystem size. The value is interpreted</span>
+<span class="sd">            by the given unit.</span>
+
+<span class="sd">        :param int blocksize:</span>
+<span class="sd">            blocksize as requested from the filesystem creation tool</span>
+<span class="sd">            for specifying the filesystem size. The value is interpreted</span>
+<span class="sd">            by the given unit. By default set to: 1</span>
+
+<span class="sd">        :param str unit:</span>
+<span class="sd">            Unit to use for calculations and return value</span>
+<span class="sd">            Default unit is set to: defaults.UNIT.kb</span>
+
+<span class="sd">        :return: an int block count of the specified unit as str</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result_size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">/</span> <span class="n">blocksize</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">device_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_provider</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span>
+            <span class="n">device_byte_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_provider</span><span class="o">.</span><span class="n">get_byte_size</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+            <span class="n">requested_byte_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_size</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">byte</span><span class="p">)</span>
+            <span class="n">result_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_size</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">device_byte_size</span> <span class="o">+</span> <span class="n">requested_byte_size</span><span class="p">)</span> <span class="o">/</span> <span class="n">blocksize</span><span class="p">,</span>
+                <span class="n">from_unit</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">byte</span><span class="p">,</span> <span class="n">to_unit</span><span class="o">=</span><span class="n">unit</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">result_size</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_apply_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
