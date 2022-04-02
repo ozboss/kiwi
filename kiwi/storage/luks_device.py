@@ -132,7 +132,8 @@ class LuksDevice(DeviceProvider):
 
         Command.run(
             [
-                'cryptsetup', '-q', '--key-file', passphrase_file
+                'cryptsetup', '-q', '--key-file', passphrase_file,
+                '--key-size', '256'
             ] + options + extra_options + [
                 'luksFormat', storage_device
             ]
@@ -142,14 +143,16 @@ class LuksDevice(DeviceProvider):
             LuksDevice.create_random_keyfile(keyfile)
             Command.run(
                 [
-                    'cryptsetup', '--key-file', passphrase_file
+                    'cryptsetup', '--key-file', passphrase_file,
+                    '--keyfile-size', '256'
                 ] + extra_options + [
                     'luksAddKey', storage_device, keyfile
                 ]
             )
         Command.run(
             [
-                'cryptsetup', '--key-file', passphrase_file
+                'cryptsetup', '--key-file', passphrase_file,
+                '--keyfile-size', '256'
             ] + extra_options + [
                 'luksOpen', storage_device, self.luks_name
             ]

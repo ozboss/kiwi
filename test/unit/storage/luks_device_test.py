@@ -64,6 +64,7 @@ class TestLuksDevice:
                 call(
                     [
                         'cryptsetup', '-q', '--key-file', '/dev/zero',
+                        '--key-size', '256',
                         '--cipher', 'aes-xts-plain64',
                         '--key-size', '256', '--hash', 'sha1',
                         '--keyfile-size', '32',
@@ -73,6 +74,7 @@ class TestLuksDevice:
                 call(
                     [
                         'cryptsetup', '--key-file', '/dev/zero',
+                        '--keyfile-size', '256',
                         '--keyfile-size', '32',
                         'luksAddKey', '/dev/some-device', 'some-keyfile'
                     ]
@@ -80,6 +82,7 @@ class TestLuksDevice:
                 call(
                     [
                         'cryptsetup', '--key-file', '/dev/zero',
+                        '--keyfile-size', '256',
                         '--keyfile-size', '32',
                         'luksOpen', '/dev/some-device', 'luksRoot'
                     ]
@@ -110,6 +113,7 @@ class TestLuksDevice:
                 call(
                     [
                         'cryptsetup', '-q', '--key-file', 'tmpfile',
+                        '--key-size', '256',
                         '--cipher', 'aes-xts-plain64',
                         '--key-size', '256', '--hash', 'sha1',
                         'luksFormat', '/dev/some-device'
@@ -117,13 +121,15 @@ class TestLuksDevice:
                 ),
                 call(
                     [
-                        'cryptsetup', '--key-file', 'tmpfile', 'luksAddKey',
+                        'cryptsetup', '--key-file', 'tmpfile',
+                        '--keyfile-size', '256', 'luksAddKey',
                         '/dev/some-device', 'some-keyfile'
                     ]
                 ),
                 call(
                     [
-                        'cryptsetup', '--key-file', 'tmpfile', 'luksOpen',
+                        'cryptsetup', '--key-file', 'tmpfile',
+                        '--keyfile-size', '256', 'luksOpen',
                         '/dev/some-device', 'luksRoot'
                     ]
                 )
