@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Image Description Elements &mdash; KIWI NG 9.24.30 documentation</title>
+  <title>Image Description Elements &mdash; KIWI NG 9.24.31 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
@@ -556,6 +556,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../api/kiwi.storage.html#module-kiwi.storage.luks_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.luks_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/kiwi.storage.html#module-kiwi.storage.mapped_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.mapped_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/kiwi.storage.html#module-kiwi.storage.raid_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.raid_device</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/kiwi.storage.html#module-kiwi.storage.clone_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.clone_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/kiwi.storage.html#module-kiwi.storage.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.setup</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/kiwi.storage.html#module-kiwi.storage">Module Contents</a></li>
 </ul>
@@ -666,7 +667,7 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This document provides a reference for the elements
-and attributes of the KIWI NG XML document in version 9.24.30</p>
+and attributes of the KIWI NG XML document in version 9.24.31</p>
 </div>
 <section id="image">
 <span id="sec-image"></span><h2>&lt;image&gt;<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h2>
@@ -1354,6 +1355,10 @@ to be written into the master block. There is space for 32 characters.</p>
 <dt>derived_from=”string”:</dt><dd><p>For container images, specifies the image URI of the container image.
 The image created by KIWI NG will use the specified container as the
 base root to work on.</p>
+</dd>
+<dt>ensure_empty_tmpdirs=”true|false”:</dt><dd><p>For OCI container images, specifies whether to ensure /run and /tmp
+directories are empty in the container image created by Kiwi.
+Default is true.</p>
 </dd>
 <dt>publisher=”string”:</dt><dd><p>For ISO images, specifies the publisher name of the ISO.</p>
 </dd>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; KIWI NG 9.24.30 documentation</title>
+  <title>Index &mdash; KIWI NG 9.24.31 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -553,6 +553,7 @@
 <li class="toctree-l3"><a class="reference internal" href="api/kiwi.storage.html#module-kiwi.storage.luks_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.luks_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/kiwi.storage.html#module-kiwi.storage.mapped_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.mapped_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/kiwi.storage.html#module-kiwi.storage.raid_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.raid_device</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kiwi.storage.html#module-kiwi.storage.clone_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.clone_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/kiwi.storage.html#module-kiwi.storage.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.setup</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/kiwi.storage.html#module-kiwi.storage">Module Contents</a></li>
 </ul>
@@ -922,6 +923,10 @@
 </li>
       <li><a href="api/kiwi.tasks.html#kiwi.tasks.base.CliTask">CliTask (class in kiwi.tasks.base)</a>
 </li>
+      <li><a href="api/kiwi.storage.html#kiwi.storage.clone_device.CloneDevice.clone">clone() (kiwi.storage.clone_device.CloneDevice method)</a>
+</li>
+      <li><a href="api/kiwi.storage.html#kiwi.storage.clone_device.CloneDevice">CloneDevice (class in kiwi.storage.clone_device)</a>
+</li>
       <li><a href="api/kiwi.html#kiwi.logger_color_formatter.ColorFormatter">ColorFormatter (class in kiwi.logger_color_formatter)</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.logger_color_formatter.ColorMessage">ColorMessage (class in kiwi.logger_color_formatter)</a>
@@ -986,6 +991,8 @@
 </li>
       <li><a href="api/kiwi.system.html#kiwi.system.kernel.Kernel.copy_xen_hypervisor">copy_xen_hypervisor() (kiwi.system.kernel.Kernel method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/kiwi.archive.html#kiwi.archive.cpio.ArchiveCpio.create">create() (kiwi.archive.cpio.ArchiveCpio method)</a>
 
       <ul>
@@ -1022,8 +1029,6 @@
         <li><a href="api/kiwi.system.html#kiwi.system.root_init.RootInit.create">(kiwi.system.root_init.RootInit method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/kiwi.storage.html#kiwi.storage.disk.Disk.create_boot_partition">create_boot_partition() (kiwi.storage.disk.Disk method)</a>
 </li>
       <li><a href="api/kiwi.storage.subformat.html#kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase.create_box_img">create_box_img() (kiwi.storage.subformat.vagrant_base.DiskFormatVagrantBase method)</a>
@@ -2851,6 +2856,13 @@
 </li>
       </ul></li>
       <li>
+    kiwi.storage.clone_device
+
+      <ul>
+        <li><a href="api/kiwi.storage.html#module-kiwi.storage.clone_device">module</a>
+</li>
+      </ul></li>
+      <li>
     kiwi.storage.device_provider
 
       <ul>
@@ -3760,6 +3772,8 @@
 </li>
         <li><a href="api/kiwi.storage.html#module-kiwi.storage">kiwi.storage</a>
 </li>
+        <li><a href="api/kiwi.storage.html#module-kiwi.storage.clone_device">kiwi.storage.clone_device</a>
+</li>
         <li><a href="api/kiwi.storage.html#module-kiwi.storage.device_provider">kiwi.storage.device_provider</a>
 </li>
         <li><a href="api/kiwi.storage.html#module-kiwi.storage.disk">kiwi.storage.disk</a>
@@ -4397,6 +4411,24 @@
       </ul></li>
       <li><a href="api/kiwi.html#kiwi.defaults.Defaults.set_temp_location">set_temp_location() (kiwi.defaults.Defaults static method)</a>
 </li>
+      <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.base.FileSystemBase.set_uuid">set_uuid() (kiwi.filesystem.base.FileSystemBase method)</a>
+
+      <ul>
+        <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.btrfs.FileSystemBtrfs.set_uuid">(kiwi.filesystem.btrfs.FileSystemBtrfs method)</a>
+</li>
+        <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.ext2.FileSystemExt2.set_uuid">(kiwi.filesystem.ext2.FileSystemExt2 method)</a>
+</li>
+        <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.ext3.FileSystemExt3.set_uuid">(kiwi.filesystem.ext3.FileSystemExt3 method)</a>
+</li>
+        <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.ext4.FileSystemExt4.set_uuid">(kiwi.filesystem.ext4.FileSystemExt4 method)</a>
+</li>
+        <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.fat16.FileSystemFat16.set_uuid">(kiwi.filesystem.fat16.FileSystemFat16 method)</a>
+</li>
+        <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.fat32.FileSystemFat32.set_uuid">(kiwi.filesystem.fat32.FileSystemFat32 method)</a>
+</li>
+        <li><a href="api/kiwi.filesystem.html#kiwi.filesystem.xfs.FileSystemXfs.set_uuid">(kiwi.filesystem.xfs.FileSystemXfs method)</a>
+</li>
+      </ul></li>
       <li><a href="api/kiwi.html#kiwi.logger.Logger.setLogFlag">setLogFlag() (kiwi.logger.Logger method)</a>
 </li>
       <li><a href="api/kiwi.html#kiwi.logger.Logger.setLogLevel">setLogLevel() (kiwi.logger.Logger method)</a>
@@ -4457,6 +4489,8 @@
         <li><a href="api/kiwi.bootloader.config.html#kiwi.bootloader.config.isolinux.BootLoaderConfigIsoLinux.setup_live_boot_images">(kiwi.bootloader.config.isolinux.BootLoaderConfigIsoLinux method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/kiwi.bootloader.config.html#kiwi.bootloader.config.base.BootLoaderConfigBase.setup_live_image_config">setup_live_image_config() (kiwi.bootloader.config.base.BootLoaderConfigBase method)</a>
 
       <ul>
@@ -4465,8 +4499,6 @@
         <li><a href="api/kiwi.bootloader.config.html#kiwi.bootloader.config.isolinux.BootLoaderConfigIsoLinux.setup_live_image_config">(kiwi.bootloader.config.isolinux.BootLoaderConfigIsoLinux method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/kiwi.system.html#kiwi.system.setup.SystemSetup.setup_locale">setup_locale() (kiwi.system.setup.SystemSetup method)</a>
 </li>
       <li><a href="api/kiwi.system.html#kiwi.system.setup.SystemSetup.setup_machine_id">setup_machine_id() (kiwi.system.setup.SystemSetup method)</a>

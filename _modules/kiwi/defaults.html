@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.defaults &mdash; KIWI NG 9.24.30 documentation</title>
+  <title>kiwi.defaults &mdash; KIWI NG 9.24.31 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
@@ -553,6 +553,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../api/kiwi.storage.html#module-kiwi.storage.luks_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.luks_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/kiwi.storage.html#module-kiwi.storage.mapped_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.mapped_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/kiwi.storage.html#module-kiwi.storage.raid_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.raid_device</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/kiwi.storage.html#module-kiwi.storage.clone_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.clone_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/kiwi.storage.html#module-kiwi.storage.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.setup</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/kiwi.storage.html#module-kiwi.storage">Module Contents</a></li>
 </ul>
@@ -996,7 +997,7 @@
         <span class="p">]</span></div>
 
 <div class="viewcode-block" id="Defaults.get_exclude_list_for_root_data_sync"><a class="viewcode-back" href="../../api/kiwi.html#kiwi.defaults.Defaults.get_exclude_list_for_root_data_sync">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_exclude_list_for_root_data_sync</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">get_exclude_list_for_root_data_sync</span><span class="p">(</span><span class="n">no_tmpdirs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provides the list of files or folders that are created</span>
 <span class="sd">        by KIWI for its own purposes. Those files should be not</span>
@@ -1007,7 +1008,11 @@
 <span class="sd">        :rtype: list</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">exclude_list</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;.profile&#39;</span><span class="p">,</span> <span class="s1">&#39;.kconfig&#39;</span><span class="p">,</span> <span class="s1">&#39;run/*&#39;</span><span class="p">,</span> <span class="s1">&#39;tmp/*&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;.profile&#39;</span><span class="p">,</span> <span class="s1">&#39;.kconfig&#39;</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">no_tmpdirs</span><span class="p">:</span>
+            <span class="n">exclude_list</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;run/*&#39;</span><span class="p">,</span> <span class="s1">&#39;tmp/*&#39;</span><span class="p">]</span>
+        <span class="n">exclude_list</span> <span class="o">+=</span> <span class="p">[</span>
             <span class="n">Defaults</span><span class="o">.</span><span class="n">get_buildservice_env_name</span><span class="p">(),</span>
             <span class="n">Defaults</span><span class="o">.</span><span class="n">get_shared_cache_location</span><span class="p">()</span>
         <span class="p">]</span>

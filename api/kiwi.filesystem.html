@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.filesystem Package &mdash; KIWI NG 9.24.30 documentation</title>
+  <title>kiwi.filesystem Package &mdash; KIWI NG 9.24.31 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
@@ -556,6 +556,7 @@
 <li class="toctree-l3"><a class="reference internal" href="kiwi.storage.html#module-kiwi.storage.luks_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.luks_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kiwi.storage.html#module-kiwi.storage.mapped_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.mapped_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kiwi.storage.html#module-kiwi.storage.raid_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.raid_device</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kiwi.storage.html#module-kiwi.storage.clone_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.clone_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kiwi.storage.html#module-kiwi.storage.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.setup</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="kiwi.storage.html#module-kiwi.storage">Module Contents</a></li>
 </ul>
@@ -788,6 +789,14 @@ overrides the default custom argument hash</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.base.FileSystemBase.set_uuid">
+<span class="sig-name descname"><span class="pre">set_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/base.html#FileSystemBase.set_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.base.FileSystemBase.set_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new random filesystem UUID</p>
+<p>Implement in specialized filesystem class for filesystems which
+supports the concept of an UUID and allows to change it</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="kiwi.filesystem.base.FileSystemBase.sync_data">
 <span class="sig-name descname"><span class="pre">sync_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/base.html#FileSystemBase.sync_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.base.FileSystemBase.sync_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy root data tree into filesystem</p>
@@ -829,6 +838,12 @@ The value is interpreted in units of: unit</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.btrfs.FileSystemBtrfs.set_uuid">
+<span class="sig-name descname"><span class="pre">set_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/btrfs.html#FileSystemBtrfs.set_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.btrfs.FileSystemBtrfs.set_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new random filesystem UUID</p>
 </dd></dl>
 
 </dd></dl>
@@ -900,6 +915,12 @@ The value is interpreted in units of: unit</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.ext2.FileSystemExt2.set_uuid">
+<span class="sig-name descname"><span class="pre">set_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext2.html#FileSystemExt2.set_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext2.FileSystemExt2.set_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new random filesystem UUID</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -925,6 +946,12 @@ The value is interpreted in units of: unit</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.ext3.FileSystemExt3.set_uuid">
+<span class="sig-name descname"><span class="pre">set_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext3.html#FileSystemExt3.set_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext3.FileSystemExt3.set_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new random filesystem UUID</p>
 </dd></dl>
 
 </dd></dl>
@@ -954,6 +981,12 @@ The value is interpreted in units of: unit</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.ext4.FileSystemExt4.set_uuid">
+<span class="sig-name descname"><span class="pre">set_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/ext4.html#FileSystemExt4.set_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.ext4.FileSystemExt4.set_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new random filesystem UUID</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -981,6 +1014,12 @@ The value is interpreted in units of: unit</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.fat16.FileSystemFat16.set_uuid">
+<span class="sig-name descname"><span class="pre">set_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/fat16.html#FileSystemFat16.set_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.fat16.FileSystemFat16.set_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new random filesystem UUID</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -1006,6 +1045,12 @@ The value is interpreted in units of: unit</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.fat32.FileSystemFat32.set_uuid">
+<span class="sig-name descname"><span class="pre">set_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/fat32.html#FileSystemFat32.set_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.fat32.FileSystemFat32.set_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new random filesystem UUID</p>
 </dd></dl>
 
 </dd></dl>
@@ -1128,6 +1173,12 @@ The value is interpreted in units of: unit</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="kiwi.filesystem.xfs.FileSystemXfs.set_uuid">
+<span class="sig-name descname"><span class="pre">set_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kiwi/filesystem/xfs.html#FileSystemXfs.set_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#kiwi.filesystem.xfs.FileSystemXfs.set_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new random filesystem UUID</p>
 </dd></dl>
 
 </dd></dl>

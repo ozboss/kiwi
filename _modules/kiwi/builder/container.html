@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.builder.container &mdash; KIWI NG 9.24.30 documentation</title>
+  <title>kiwi.builder.container &mdash; KIWI NG 9.24.31 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
@@ -553,6 +553,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/kiwi.storage.html#module-kiwi.storage.luks_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.luks_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/kiwi.storage.html#module-kiwi.storage.mapped_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.mapped_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/kiwi.storage.html#module-kiwi.storage.raid_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.raid_device</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/kiwi.storage.html#module-kiwi.storage.clone_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.clone_device</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/kiwi.storage.html#module-kiwi.storage.setup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kiwi.storage.setup</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/kiwi.storage.html#module-kiwi.storage">Module Contents</a></li>
 </ul>
@@ -716,6 +717,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">requested_container_type</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">get_build_type_name</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_image</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_image_md5</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensure_empty_tmpdirs</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">container_config</span><span class="p">[</span><span class="s1">&#39;xz_options&#39;</span><span class="p">]</span> <span class="o">=</span> \
             <span class="bp">self</span><span class="o">.</span><span class="n">custom_args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xz_options&#39;</span><span class="p">)</span>
@@ -744,6 +746,9 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">base_image_md5</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_ensure_empty_tmpdirs</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ensure_empty_tmpdirs</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">system_setup</span> <span class="o">=</span> <span class="n">SystemSetup</span><span class="p">(</span>
             <span class="n">xml_state</span><span class="o">=</span><span class="n">xml_state</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>
@@ -801,7 +806,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">requested_container_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">container_config</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">container_image</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_image</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ensure_empty_tmpdirs</span>
         <span class="p">)</span>
         <span class="n">Result</span><span class="o">.</span><span class="n">verify_image_size</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">runtime_config</span><span class="o">.</span><span class="n">get_max_size_constraint</span><span class="p">(),</span>
@@ -809,11 +814,15 @@
         <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bundle_format</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">add_bundle_format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bundle_format</span><span class="p">)</span>
+        <span class="n">compress</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># appx handles compression in container_image.create</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">requested_container_type</span> <span class="o">!=</span> <span class="s1">&#39;appx&#39;</span><span class="p">:</span>
+            <span class="n">compress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime_config</span><span class="o">.</span><span class="n">get_container_compression</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
             <span class="n">key</span><span class="o">=</span><span class="s1">&#39;container&#39;</span><span class="p">,</span>
             <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
             <span class="n">use_for_bundle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">compress</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">runtime_config</span><span class="o">.</span><span class="n">get_container_compression</span><span class="p">(),</span>
+            <span class="n">compress</span><span class="o">=</span><span class="n">compress</span><span class="p">,</span>
             <span class="n">shasum</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
