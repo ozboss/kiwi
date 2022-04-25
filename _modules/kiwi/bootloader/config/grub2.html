@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.bootloader.config.grub2 &mdash; KIWI NG 9.24.31 documentation</title>
+  <title>kiwi.bootloader.config.grub2 &mdash; KIWI NG 9.24.32 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
@@ -917,8 +917,10 @@
                 <span class="s1">&#39;rm&#39;</span><span class="p">,</span> <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;boot&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;&amp;&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;ln&#39;</span><span class="p">,</span> <span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;boot&#39;</span>
             <span class="p">]</span>
+            <span class="c1"># not every filesystem supports symlinks, and the link is optional</span>
+            <span class="c1"># therefore don&#39;t fail in case the link cannot be created</span>
             <span class="n">Command</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-                <span class="p">[</span><span class="s1">&#39;bash&#39;</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bash_command</span><span class="p">)]</span>
+                <span class="p">[</span><span class="s1">&#39;bash&#39;</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bash_command</span><span class="p">)],</span> <span class="n">raise_on_error</span><span class="o">=</span><span class="kc">False</span>
             <span class="p">)</span>
 
         <span class="c1"># Patch the written grub config file to actually work:</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kiwi.builder.disk &mdash; KIWI NG 9.24.31 documentation</title>
+  <title>kiwi.builder.disk &mdash; KIWI NG 9.24.32 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
@@ -702,6 +702,7 @@
 <span class="kn">from</span> <span class="nn">kiwi.storage.disk</span> <span class="kn">import</span> <span class="n">Disk</span>
 <span class="kn">from</span> <span class="nn">kiwi.storage.raid_device</span> <span class="kn">import</span> <span class="n">RaidDevice</span>
 <span class="kn">from</span> <span class="nn">kiwi.storage.luks_device</span> <span class="kn">import</span> <span class="n">LuksDevice</span>
+<span class="kn">from</span> <span class="nn">kiwi.storage.integrity_device</span> <span class="kn">import</span> <span class="n">IntegrityDevice</span>
 <span class="kn">from</span> <span class="nn">kiwi.storage.device_provider</span> <span class="kn">import</span> <span class="n">DeviceProvider</span>
 <span class="kn">from</span> <span class="nn">kiwi.filesystem</span> <span class="kn">import</span> <span class="n">FileSystem</span>
 <span class="kn">from</span> <span class="nn">kiwi.filesystem.squashfs</span> <span class="kn">import</span> <span class="n">FileSystemSquashFs</span>
@@ -779,6 +780,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">hybrid_mbr</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_gpt_hybrid_mbr</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_mbr</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_force_mbr</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">luks</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">get_luks_credentials</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_standalone_integrity</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_filesystem_embed_integrity_metadata</span> <span class="o">=</span> \
+            <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_embed_integrity_metadata</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">luks_format_options</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">get_luks_format_options</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">luks_os</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">build_type</span><span class="o">.</span><span class="n">get_luksOS</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xen_server</span> <span class="o">=</span> <span class="n">xml_state</span><span class="o">.</span><span class="n">is_xen_server</span><span class="p">()</span>
@@ -961,6 +965,16 @@
             <span class="n">disk</span><span class="o">.</span><span class="n">public_partition_id_map</span><span class="p">[</span><span class="s1">&#39;kiwi_RaidDev&#39;</span><span class="p">]</span> <span class="o">=</span> \
                 <span class="n">device_map</span><span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span>
 
+        <span class="c1"># create integrity on current root device if requested</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span> <span class="o">=</span> <span class="n">IntegrityDevice</span><span class="p">(</span><span class="n">device_map</span><span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span><span class="o">.</span><span class="n">create_dm_integrity</span><span class="p">()</span>
+            <span class="n">device_map</span><span class="p">[</span><span class="s1">&#39;integrity_root&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">device_map</span><span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">]</span>
+            <span class="n">device_map</span><span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_filesystem_is_overlay</span> <span class="ow">and</span> \
+               <span class="bp">self</span><span class="o">.</span><span class="n">root_filesystem_has_write_partition</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">device_map</span><span class="p">[</span><span class="s1">&#39;readonly&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">device_map</span><span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">]</span>
+
         <span class="c1"># create luks on current root device if requested</span>
         <span class="n">luks_root</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">luks</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1066,9 +1080,16 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
                     <span class="n">filesystem_custom_parameters</span>
                 <span class="p">)</span>
-                <span class="n">filesystem</span><span class="o">.</span><span class="n">create_on_device</span><span class="p">(</span>
-                    <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">disk_setup</span><span class="o">.</span><span class="n">get_root_label</span><span class="p">()</span>
-                <span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_filesystem_embed_integrity_metadata</span><span class="p">:</span>
+                    <span class="n">filesystem</span><span class="o">.</span><span class="n">create_on_device</span><span class="p">(</span>
+                        <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">disk_setup</span><span class="o">.</span><span class="n">get_root_label</span><span class="p">(),</span>
+                        <span class="n">size</span><span class="o">=-</span><span class="n">defaults</span><span class="o">.</span><span class="n">DM_METADATA_OFFSET</span><span class="p">,</span>
+                        <span class="n">unit</span><span class="o">=</span><span class="n">defaults</span><span class="o">.</span><span class="n">UNIT</span><span class="o">.</span><span class="n">byte</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">filesystem</span><span class="o">.</span><span class="n">create_on_device</span><span class="p">(</span>
+                        <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">disk_setup</span><span class="o">.</span><span class="n">get_root_label</span><span class="p">(),</span>
+                    <span class="p">)</span>
                 <span class="n">system</span> <span class="o">=</span> <span class="n">filesystem</span>
 
         <span class="c1"># create swap on current root device if requested</span>
@@ -1105,6 +1126,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_image_identifier_to_system_image</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_crypttab_to_system_image</span><span class="p">(</span><span class="n">luks_root</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_integritytab_to_system_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_generic_fstab_to_system_image</span><span class="p">(</span><span class="n">device_map</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span>
 
@@ -1600,6 +1623,19 @@
                 <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;etc&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)])</span>
             <span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_write_integritytab_to_system_image</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">integrity_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IntegrityDevice</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">integrity_root</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Creating etc/integritytab&#39;</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span> <span class="s1">&#39;/etc/integritytab&#39;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">integrity_root</span><span class="o">.</span><span class="n">create_integritytab</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boot_image</span><span class="o">.</span><span class="n">include_file</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;etc&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)])</span>
+            <span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_write_crypttab_to_system_image</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">luks_root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LuksDevice</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1894,7 +1930,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">root_filesystem_verity_blocks</span> <span class="o">!=</span> <span class="s1">&#39;all&#39;</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="p">)</span><span class="o">.</span><span class="n">get_hash_byte_size</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_filesystem_embed_verity_metadata</span><span class="p">:</span>
-                <span class="n">verity_root_file_bytes</span> <span class="o">-=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">VERIFICATION_METADATA_OFFSET</span>
+                <span class="n">verity_root_file_bytes</span> <span class="o">-=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">DM_METADATA_OFFSET</span>
             <span class="n">verity_root_file</span> <span class="o">=</span> <span class="n">Temporary</span><span class="p">()</span><span class="o">.</span><span class="n">new_file</span><span class="p">()</span>
             <span class="n">loop_provider</span> <span class="o">=</span> <span class="n">LoopDevice</span><span class="p">(</span>
                 <span class="n">verity_root_file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
@@ -1945,6 +1981,14 @@
             <span class="n">system</span><span class="o">.</span><span class="n">sync_data</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_get_exclude_list_for_root_data_sync</span><span class="p">(</span><span class="n">device_map</span><span class="p">)</span>
             <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span> <span class="ow">and</span> \
+           <span class="bp">self</span><span class="o">.</span><span class="n">root_filesystem_embed_integrity_metadata</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;--&gt; Creating integrity metadata...&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span><span class="o">.</span><span class="n">create_integrity_metadata</span><span class="p">()</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;--&gt; Signing integrity metadata...&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span><span class="o">.</span><span class="n">sign_integrity_metadata</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">integrity_root</span><span class="o">.</span><span class="n">write_integrity_metadata</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_install_bootloader</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">device_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">disk</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">Any</span>
